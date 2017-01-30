@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="DB/Hibernate" uuid="853ede35-1f30-4c07-bb7d-9501f78228e2">
+      <database-info product="H2" version="1.4.192 (2016-05-26)" jdbc-version="4.0" driver-name="H2 JDBC Driver" driver-version="1.4.192 (2016-05-26)">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
+      <user-password>dfc0dfcedfc8dfc9df90dfc2df98df90df84df85dfdedfcbdfd8dfcddfcfdfdedf85dfcedfc8</user-password>
+      <resolve-scope>DB:public</resolve-scope>
+    </data-source>
+  </component>
+</project>
