@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>no.JoakimEJacobsen.hovedprosjekt</groupId>
+    <artifactId>hovedprosjekt</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>data</module>
+        <module>MyUtils</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!--
+    Here we define all third-party dependencies we need in the sub-modules, so that we
+    do not have to copy&paste each time the <version> and <scope> tags
+
+    To check for new versions, use:
+
+    mvn versions:display-dependency-updates
+    -->
+    <dependencyManagement>
+        <dependencies>
+
+            <!--
+                The scope
+                <scope>provided</scope>
+                is quite important for JEE.
+                It means that those libraries are available at compilation and test time, but,
+                they will not be included in the final WAR/JAR files.
+                Why? Because the JEE container will already contain them. However, what is
+                actually contained depends from container to container (eg few differences
+                between GlassFish and JBoss/WildFly). Here we have settings for WildFly.
+                Note: actual settings can be overwritten in the module pom.xml files.
+            -->
+
+
+            <!-- JPA / Hibernate / Database -->
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>1.0.0.Final</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>5.2.6.Final</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.193</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.23</version>
+            </dependency>
+
+
+            <!-- test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <!-- JUnit 5 is out, but still not in a stable / widely supported state -->
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.15</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+
+        <!--
+            like dependencyManagement, this only defines which (and how) plugins to use.
+            to actually activate them, they need to be directly under <plugins> (without
+            the need to reset all their configurations).
+            Note: some plugins are default in Maven, like the compiler.
+            To see what actually executed, you can look at the logs.
+        -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+
+                <!-- this is needed to run integration tests -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.19.1</version>
+                    <executions>
+                        <execution>
+                            <id>run-tests</id>
+                            <phase>integration-test</phase>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+
+</project>
