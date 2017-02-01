@@ -17,7 +17,8 @@ public abstract class LocalUtils {
                 em.persist(o);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("FAILED TRANSACTION: " + e.toString());
+            System.out.println("FAILED TRANSACTION: " + e.toString() + "\n");
+            e.printStackTrace();
             tx.rollback();
             return false;
         }

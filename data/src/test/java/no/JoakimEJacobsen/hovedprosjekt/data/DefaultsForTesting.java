@@ -1,12 +1,10 @@
 package no.JoakimEJacobsen.hovedprosjekt.data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
- * In order to use these properly when writing tests, remember to call the method resetDefaults()
- * in @After method of testing.
+ * In order to use these properly when writing tests, remember to call the method setUpDefaults()
+ * in @Before method of testing.
  */
 abstract class DefaultsForTesting {
 
@@ -15,8 +13,8 @@ abstract class DefaultsForTesting {
     static Dish dish02 = null;
     static Dish dish03 = null;
 
-    // List of Dishes
-    static final List<Dish> dishes = new ArrayList<>(Arrays.asList(dish01, dish02, dish03));
+    // Set of Dishes
+    static Set<Dish> dishes = null;
 
     // DayMenus
     static DayMenu dayMenu01 = null;
@@ -24,7 +22,7 @@ abstract class DefaultsForTesting {
     static DayMenu dayMenu03 = null;
 
     // List of DayMenus
-    static final List<DayMenu> dayMenus = new ArrayList<>(Arrays.asList(dayMenu01, dayMenu02, dayMenu03));
+    static List<DayMenu> dayMenus = null;
 
     // WeekMenu ID's
     static WeekMenuId weekMenuId01 = null;
@@ -40,10 +38,16 @@ abstract class DefaultsForTesting {
         dish02 = new Dish("Dish_B", "Dish_B_type", "Dish_B_description");
         dish03 = new Dish("Dish_C", "Dish_C_type", "Dish_C_description");
 
+        // Set of dishes
+        dishes = new HashSet<>(Arrays.asList(dish01, dish02, dish03));
+
         // DayMenus
         dayMenu01 = new DayMenu("Wednesday", dishes);
         dayMenu02 = new DayMenu("Thursday", dishes);
         dayMenu03 = new DayMenu("Friday", dishes);
+
+        // List of DayMenus
+        dayMenus = new ArrayList<>(Arrays.asList(dayMenu01, dayMenu02, dayMenu03));
 
         // WeekMenu ID's
         weekMenuId01 = new WeekMenuId(2, 2017);

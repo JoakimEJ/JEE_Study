@@ -3,6 +3,7 @@ package no.JoakimEJacobsen.hovedprosjekt.data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Joakim on 12.01.2017.
@@ -17,14 +18,19 @@ public class DayMenu implements Serializable
     // TODO: Change this to enum later.
     private String dayOfWeek;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private List<Dish> dishList;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.DETACH,
+            CascadeType.REFRESH
+    })
+    private Set<Dish> dishList;
 
     // Empty Constructor
     public DayMenu() {}
 
     // Full Constructor
-    public DayMenu(String dayOfWeek, List<Dish> dishList) {
+    public DayMenu(String dayOfWeek, Set<Dish> dishList) {
         this.dayOfWeek = dayOfWeek;
         this.dishList = dishList;
     }
@@ -37,11 +43,11 @@ public class DayMenu implements Serializable
         this.dayMenuId = dayMenuId;
     }
 
-    public List<Dish> getDishList() {
+    public Set<Dish> getDishList() {
         return dishList;
     }
 
-    public void setDishList(List<Dish> dayMenuList) {
+    public void setDishList(Set<Dish> dayMenuList) {
         this.dishList = dayMenuList;
     }
 
