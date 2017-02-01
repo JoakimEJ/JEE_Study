@@ -24,13 +24,13 @@ public class DayMenu implements Serializable
             CascadeType.DETACH,
             CascadeType.REFRESH
     })
-    private Set<Dish> dishList;
+    private List<Dish> dishList;
 
     // Empty Constructor
     public DayMenu() {}
 
     // Full Constructor
-    public DayMenu(String dayOfWeek, Set<Dish> dishList) {
+    public DayMenu(String dayOfWeek, List<Dish> dishList) {
         this.dayOfWeek = dayOfWeek;
         this.dishList = dishList;
     }
@@ -43,11 +43,11 @@ public class DayMenu implements Serializable
         this.dayMenuId = dayMenuId;
     }
 
-    public Set<Dish> getDishList() {
+    public List<Dish> getDishList() {
         return dishList;
     }
 
-    public void setDishList(Set<Dish> dayMenuList) {
+    public void setDishList(List<Dish> dayMenuList) {
         this.dishList = dayMenuList;
     }
 

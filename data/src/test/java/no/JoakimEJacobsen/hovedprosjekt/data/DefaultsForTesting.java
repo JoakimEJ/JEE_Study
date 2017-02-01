@@ -14,7 +14,7 @@ abstract class DefaultsForTesting {
     static Dish dish03 = null;
 
     // Set of Dishes
-    static Set<Dish> dishes = null;
+    static List<Dish> dishes = null;
 
     // DayMenus
     static DayMenu dayMenu01 = null;
@@ -39,7 +39,7 @@ abstract class DefaultsForTesting {
         dish03 = new Dish("Dish_C", "Dish_C_type", "Dish_C_description");
 
         // Set of dishes
-        dishes = new HashSet<>(Arrays.asList(dish01, dish02, dish03));
+        dishes = new ArrayList<>(Arrays.asList(dish01, dish02, dish03));
 
         // DayMenus
         dayMenu01 = new DayMenu("Wednesday", dishes);

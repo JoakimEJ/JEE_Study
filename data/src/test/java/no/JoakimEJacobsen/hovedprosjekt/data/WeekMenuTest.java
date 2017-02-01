@@ -70,18 +70,19 @@ public class WeekMenuTest
         // READ FROM DATABASE TO CHECK RESULTS //
         em.clear();
 
-        Query query = em.createQuery("SELECT k FROM WeekMenu k");
-        List<WeekMenu> weekMenus = query.getResultList();
 
-        WeekMenu testWeekMenu = weekMenus.get(0);
-        assertEquals(3, testWeekMenu.getDayMenuList().size());
+//        WeekMenu testWeekMenu = em.find(WeekMenu.class, weekMenu01.getId());
+//        assertEquals(3, testWeekMenu.getDayMenuList().size());
         /**
          * When using the entitymanager to get the weekmenu, the size of testWeekmenu.getDaymenuList is 9,
          * But when doing the same operation with em.createQuery, the size is 3...
          * So TODO: Find out what the fck is going on...
          */
-//        WeekMenu testWeekMenu = em.find(WeekMenu.class, debugWeekMenu01.getId());
-//        assertEquals(9, testWeekMenu.getDayMenuList().size());
+        Query query = em.createQuery("SELECT k FROM WeekMenu k");
+        List<WeekMenu> weekMenus = query.getResultList();
+        WeekMenu testWeekMenu = weekMenus.get(0);
+        assertEquals(3, testWeekMenu.getDayMenuList().size());
+
 
         assertEquals(3, testWeekMenu.getDayMenuList().get(0).getDishList().size());
         assertEquals(3, testWeekMenu.getDayMenuList().get(1).getDishList().size());
@@ -95,6 +96,7 @@ public class WeekMenuTest
      * always fails. I am actually not 100% sure why this is happening so TODO: Figure out why this is happening!
      * I think it might have something to do with the auto generated ID for Dish and DayMenu objects as they are given
      * an ID for the first test, so when it tries to commit the second time the ID field is not null.
+     *
      * FIXED! THIS PROBLEM IS FIXED FOR NOW, LEAVE COMMENT UNTIL 100% SURE.
      */
     @Test
