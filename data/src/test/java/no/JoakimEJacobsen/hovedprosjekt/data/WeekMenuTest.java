@@ -6,10 +6,7 @@ import org.junit.Test;
 
 import javax.persistence.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 
 import static no.JoakimEJacobsen.hovedprosjekt.data.DefaultsForTesting.*;
@@ -30,48 +27,54 @@ public class WeekMenuTest
         factory = Persistence.createEntityManagerFactory("DB");
         em = factory.createEntityManager();
 
-        setUpDefaults();
+        //setUpDefaults();
     }
 
     @After
     public void tearDown() {
-        if(em.isOpen())
-            em.close();
-        if(factory.isOpen())
-            factory.close();
+        //if(em.isOpen())
+        em.close();
+        //if(factory.isOpen())
+        factory.close();
     }
 
 
     @Test
     public void testWeekMenu_commitOneWeekMenu()
     {
-//        Dish debugDish01 = new Dish("A", "A_type", "A_Desc");
-//        Dish debugDish02 = new Dish("B", "B_type", "B_Desc");
-//        Dish debugDish03 = new Dish("C", "C_type", "C_Desc");
-//
-//        Set<Dish> debugDishList = new HashSet<>(Arrays.asList(debugDish01, debugDish02, debugDish03));
-//
-//        DayMenu debugDayMenu01 = new DayMenu("Wed", debugDishList);
-//        DayMenu debugDayMenu02 = new DayMenu("Thu", debugDishList);
-//        DayMenu debugDayMenu03 = new DayMenu("Fri", debugDishList);
-//
-//        List<DayMenu> debugDayMenuList = Arrays.asList(debugDayMenu01, debugDayMenu02, debugDayMenu03);
-//
-//        WeekMenuId debugWeekMenuId01 = new WeekMenuId(3, 2019);
-//
-//        WeekMenu debugWeekMenu01 = new WeekMenu(debugWeekMenuId01, debugDayMenuList);
-//
-//        // PERSIST //
-//        assertTrue(persistAndCommit(em, debugWeekMenu01));
+        Dish debugDish01 = new Dish("A", "A_type", "A_Desc");
+        Dish debugDish02 = new Dish("B", "B_type", "B_Desc");
+        Dish debugDish03 = new Dish("C", "C_type", "C_Desc");
+        Dish debugDish04 = new Dish("D", "D_type", "D_Desc");
+
+        List<Dish> debugDishList01 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
+        List<Dish> debugDishList02 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
+        List<Dish> debugDishList03 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
+
+        DayMenu debugDayMenu01 = new DayMenu("Wed", debugDishList01);
+        DayMenu debugDayMenu02 = new DayMenu("Thu", debugDishList02);
+        DayMenu debugDayMenu03 = new DayMenu("Fri", debugDishList03);
+
+        List<DayMenu> debugDayMenuList = Arrays.asList(debugDayMenu01, debugDayMenu02, debugDayMenu03);
+
+        WeekMenuId debugWeekMenuId01 = new WeekMenuId(3, 2019);
+
+        WeekMenu debugWeekMenu01 = new WeekMenu(debugWeekMenuId01, debugDayMenuList);
+
+        assertEquals(3, debugWeekMenu01.getDayMenuList().size());
+
+        // PERSIST //
+        assertTrue(persistAndCommit(em, debugWeekMenu01));
 
         // USING DEFAULTS
-        assertTrue(persistAndCommit(em, weekMenu01));
+//        assertTrue(persistAndCommit(em, weekMenu01));
 
         // READ FROM DATABASE TO CHECK RESULTS //
         em.clear();
 
 
-//        WeekMenu testWeekMenu = em.find(WeekMenu.class, weekMenu01.getId());
+//        WeekMenu testWeekMenu = em.find(WeekMenu.class, debugWeekMenu01.getId());
+//        testWeekMenu.getDayMenuList().stream().forEach(x -> System.out.println(x.getDayMenuId()));
 //        assertEquals(3, testWeekMenu.getDayMenuList().size());
         /**
          * When using the entitymanager to get the weekmenu, the size of testWeekmenu.getDaymenuList is 9,
@@ -83,10 +86,12 @@ public class WeekMenuTest
         WeekMenu testWeekMenu = weekMenus.get(0);
         assertEquals(3, testWeekMenu.getDayMenuList().size());
 
+        testWeekMenu.getDayMenuList().stream().forEach(x -> System.out.println(x.getDayMenuId()));
 
-        assertEquals(3, testWeekMenu.getDayMenuList().get(0).getDishList().size());
-        assertEquals(3, testWeekMenu.getDayMenuList().get(1).getDishList().size());
-        assertEquals(3, testWeekMenu.getDayMenuList().get(2).getDishList().size());
+
+        assertEquals(4, testWeekMenu.getDayMenuList().get(0).getDishList().size());
+        assertEquals(4, testWeekMenu.getDayMenuList().get(1).getDishList().size());
+        assertEquals(4, testWeekMenu.getDayMenuList().get(2).getDishList().size());
     }
 
     // TODO: There has to be a better way to write this test (concerning asserts at the end)! Is it better to use streams or something?
