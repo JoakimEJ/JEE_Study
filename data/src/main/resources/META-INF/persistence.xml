@@ -11,6 +11,14 @@
 
         <properties>
 
+            <!--this one is needed to have SQL commands on multiple lines in the SQL scripts, eg createDB.sql-->
+            <!--<property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />-->
+
+            <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
+            <!--<property name="javax.persistence.schema-generation.create-source" value="script"/>-->
+            <!--<property name="javax.persistence.schema-generation.create-script-source" value="createDaysTable.sql" />-->
+
+
             <property name="connection.driver_class" value="org.h2.Driver"/>
             <property name="hibernate.connection.url" value="jdbc:h2:./target/db"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
@@ -40,9 +48,9 @@
 
             <!--<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>-->
             <!--<property name="javax.persistence.schema-generation.create-source" value="script"/>-->
-            <!--<property name="javax.persistence.schema-generation.create-script-source" value="createDB.sql" />-->
+            <!--<property name="javax.persistence.schema-generation.create-script-source" value="createDaysTable.sql" />-->
 
-            <!-- this one is needed to have SQL commands on multiple lines in the SQL scripts, eg createDB.sql -->
+             <!--this one is needed to have SQL commands on multiple lines in the SQL scripts, eg createDB.sql-->
             <!--<property name="hibernate.hbm2ddl.import_files_sql_extractor" value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor" />-->
         </properties>
     </persistence-unit>

@@ -42,9 +42,9 @@ abstract class DefaultsForTesting {
         dishes = new ArrayList<>(Arrays.asList(dish01, dish02, dish03));
 
         // DayMenus
-        dayMenu01 = new DayMenu("Wednesday", dishes);
-        dayMenu02 = new DayMenu("Thursday", dishes);
-        dayMenu03 = new DayMenu("Friday", dishes);
+        dayMenu01 = new DayMenu(new Day(DaysEnum.WEDNESDAY), dishes);
+        dayMenu02 = new DayMenu(new Day(DaysEnum.THURSDAY), dishes);
+        dayMenu03 = new DayMenu(new Day(DaysEnum.FRIDAY), dishes);
 
         // List of DayMenus
         dayMenus = new ArrayList<>(Arrays.asList(dayMenu01, dayMenu02, dayMenu03));

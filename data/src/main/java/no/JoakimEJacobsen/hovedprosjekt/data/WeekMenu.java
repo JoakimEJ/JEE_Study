@@ -14,7 +14,7 @@ public class WeekMenu implements Serializable
     @EmbeddedId
     private WeekMenuId id;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.DETACH,

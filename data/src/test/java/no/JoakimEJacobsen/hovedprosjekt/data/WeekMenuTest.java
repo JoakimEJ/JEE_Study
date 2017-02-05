@@ -24,7 +24,7 @@ public class WeekMenuTest
     @Before
     public void init() {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-        factory = Persistence.createEntityManagerFactory("DB");
+        factory = Persistence.createEntityManagerFactory("DB_mysql");
         em = factory.createEntityManager();
 
         //setUpDefaults();
@@ -51,9 +51,13 @@ public class WeekMenuTest
         List<Dish> debugDishList02 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
         List<Dish> debugDishList03 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
 
-        DayMenu debugDayMenu01 = new DayMenu("Wed", debugDishList01);
-        DayMenu debugDayMenu02 = new DayMenu("Thu", debugDishList02);
-        DayMenu debugDayMenu03 = new DayMenu("Fri", debugDishList03);
+        Day wednesday = new Day(DaysEnum.WEDNESDAY);
+        Day thursday = new Day(DaysEnum.THURSDAY);
+        Day friday = new Day(DaysEnum.FRIDAY);
+
+        DayMenu debugDayMenu01 = new DayMenu(wednesday, debugDishList01);
+        DayMenu debugDayMenu02 = new DayMenu(thursday, debugDishList02);
+        DayMenu debugDayMenu03 = new DayMenu(friday, debugDishList03);
 
         List<DayMenu> debugDayMenuList = Arrays.asList(debugDayMenu01, debugDayMenu02, debugDayMenu03);
 
@@ -77,7 +81,7 @@ public class WeekMenuTest
 //        testWeekMenu.getDayMenuList().stream().forEach(x -> System.out.println(x.getDayMenuId()));
 //        assertEquals(3, testWeekMenu.getDayMenuList().size());
         /**
-         * When using the entitymanager to get the weekmenu, the size of testWeekmenu.getDaymenuList is 9,
+         * When using the entitymanager to get the weekmenu, the size of testWeekmenu.getDaymenuList is 12,
          * But when doing the same operation with em.createQuery, the size is 3...
          * So TODO: Find out what the fck is going on...
          */
