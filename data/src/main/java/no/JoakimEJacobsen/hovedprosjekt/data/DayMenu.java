@@ -15,13 +15,7 @@ public class DayMenu implements Serializable
     @Id @GeneratedValue
     private Long dayMenuId;
 
-    @ManyToOne(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.DETACH,
-            CascadeType.REFRESH
-    })
-    private Day dayOfWeek;
+    private String dayOfWeek;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
@@ -35,8 +29,8 @@ public class DayMenu implements Serializable
     public DayMenu() {}
 
     // Full Constructor
-    public DayMenu(Day dayOfWeek, List<Dish> dishList) {
-        this.dayOfWeek = dayOfWeek;
+    public DayMenu(DaysEnum dayOfWeek, List<Dish> dishList) {
+        this.dayOfWeek = dayOfWeek.name();
         this.dishList = dishList;
     }
 
@@ -56,11 +50,11 @@ public class DayMenu implements Serializable
         this.dishList = dayMenuList;
     }
 
-    public Day getDayOfWeek() {
+    public String getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(Day dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDayOfWeek(DaysEnum dayOfWeek) {
+        this.dayOfWeek = dayOfWeek.name();
     }
 }

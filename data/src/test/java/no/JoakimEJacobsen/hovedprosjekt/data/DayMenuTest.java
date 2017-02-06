@@ -84,28 +84,4 @@ public class DayMenuTest {
 //            }
 //        }
     }
-
-    @Test
-    public void testDayMenu_commitDayMenusWithSameDay_True() {
-        Day friday = new Day(DaysEnum.FRIDAY);
-
-        DayMenu l_dayMenu01 = new DayMenu();
-        l_dayMenu01.setDayOfWeek(friday);
-
-        DayMenu l_dayMenu02 = new DayMenu();
-        l_dayMenu02.setDayOfWeek(friday);
-
-        persistAndCommit(em, l_dayMenu01, l_dayMenu02);
-
-        em.clear();
-
-        l_dayMenu01 = em.find(DayMenu.class, l_dayMenu01.getDayMenuId());
-        l_dayMenu02 = em.find(DayMenu.class, l_dayMenu02.getDayMenuId());
-
-        assertEquals("FRIDAY", l_dayMenu01.getDayOfWeek().getDayName());
-        assertEquals("FRIDAY", l_dayMenu02.getDayOfWeek().getDayName());
-
-        assertEquals(DaysEnum.FRIDAY.getDaysEnumId(), l_dayMenu01.getDayOfWeek().getId());
-        assertEquals(DaysEnum.FRIDAY.getDaysEnumId(), l_dayMenu02.getDayOfWeek().getId());
-    }
 }

@@ -24,10 +24,10 @@ public class WeekMenuTest
     @Before
     public void init() {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-        factory = Persistence.createEntityManagerFactory("DB_mysql");
+        factory = Persistence.createEntityManagerFactory("DB");
         em = factory.createEntityManager();
 
-        //setUpDefaults();
+        setUpDefaults();
     }
 
     @After
@@ -51,13 +51,9 @@ public class WeekMenuTest
         List<Dish> debugDishList02 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
         List<Dish> debugDishList03 = new ArrayList<>(Arrays.asList(debugDish01, debugDish02, debugDish03, debugDish04));
 
-        Day wednesday = new Day(DaysEnum.WEDNESDAY);
-        Day thursday = new Day(DaysEnum.THURSDAY);
-        Day friday = new Day(DaysEnum.FRIDAY);
-
-        DayMenu debugDayMenu01 = new DayMenu(wednesday, debugDishList01);
-        DayMenu debugDayMenu02 = new DayMenu(thursday, debugDishList02);
-        DayMenu debugDayMenu03 = new DayMenu(friday, debugDishList03);
+        DayMenu debugDayMenu01 = new DayMenu(DaysEnum.WEDNESDAY, debugDishList01);
+        DayMenu debugDayMenu02 = new DayMenu(DaysEnum.THURSDAY, debugDishList02);
+        DayMenu debugDayMenu03 = new DayMenu(DaysEnum.FRIDAY, debugDishList03);
 
         List<DayMenu> debugDayMenuList = Arrays.asList(debugDayMenu01, debugDayMenu02, debugDayMenu03);
 
@@ -154,5 +150,18 @@ public class WeekMenuTest
         assertEquals(3, weekMenus.get(1).getDayMenuList().get(0).getDishList().size());
         assertEquals(3, weekMenus.get(1).getDayMenuList().get(1).getDishList().size());
         assertEquals(3, weekMenus.get(1).getDayMenuList().get(2).getDishList().size());
+    }
+
+    private void query_CurrentWeekMenu() {
+        Calendar c = GregorianCalendar.getInstance();
+        int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
+        int year = c.get(GregorianCalendar.YEAR);
+
+    }
+
+    @Test
+    public void testWeekMenu_getWeekMenuFromQueryMethod_True() {
+        System.out.println("HERE COMES THE PADDLE");
+        query_CurrentWeekMenu();
     }
 }

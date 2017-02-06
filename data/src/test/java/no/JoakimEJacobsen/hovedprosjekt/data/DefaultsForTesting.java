@@ -42,15 +42,15 @@ abstract class DefaultsForTesting {
         dishes = new ArrayList<>(Arrays.asList(dish01, dish02, dish03));
 
         // DayMenus
-        dayMenu01 = new DayMenu(new Day(DaysEnum.WEDNESDAY), dishes);
-        dayMenu02 = new DayMenu(new Day(DaysEnum.THURSDAY), dishes);
-        dayMenu03 = new DayMenu(new Day(DaysEnum.FRIDAY), dishes);
+        dayMenu01 = new DayMenu(DaysEnum.WEDNESDAY, dishes);
+        dayMenu02 = new DayMenu(DaysEnum.THURSDAY, dishes);
+        dayMenu03 = new DayMenu(DaysEnum.FRIDAY, dishes);
 
         // List of DayMenus
         dayMenus = new ArrayList<>(Arrays.asList(dayMenu01, dayMenu02, dayMenu03));
 
         // WeekMenu ID's
-        weekMenuId01 = new WeekMenuId(2, 2017);
+        weekMenuId01 = new WeekMenuId(18, 2017);
         weekMenuId02 = new WeekMenuId(10, 2022);
 
         // WeekMenus
