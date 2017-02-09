@@ -53,7 +53,6 @@ public class DayMenuTest {
         // ASSERT //
         assertNotNull(dayMenu.getDishList()); // List is created but empty
         assertEquals(0, dayMenu.getDishList().size());
-        assertNull(dayMenu.getDayOfWeek());
     }
 
     @Test

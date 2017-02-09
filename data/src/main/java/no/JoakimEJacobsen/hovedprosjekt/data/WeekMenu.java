@@ -3,6 +3,7 @@ package no.JoakimEJacobsen.hovedprosjekt.data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Joakim on 12.01.2017.
@@ -20,17 +21,11 @@ public class WeekMenu implements Serializable
             CascadeType.DETACH,
             CascadeType.REFRESH
     })
-    private List<DayMenu> dayMenuList;
+    @MapKeyEnumerated(EnumType.STRING)
+    private Map<DaysEnum, DayMenu> dayMenuMap;
 
     // Empty constructor
     public WeekMenu() {}
-
-    // Full constructor
-    public WeekMenu(WeekMenuId id, List<DayMenu> dayMenuList)
-    {
-        this.id = id;
-        this.dayMenuList = dayMenuList;
-    }
 
     public WeekMenuId getId() {
         return id;
@@ -40,11 +35,11 @@ public class WeekMenu implements Serializable
         this.id = id;
     }
 
-    public List<DayMenu> getDayMenuList() {
-        return dayMenuList;
+    public Map<DaysEnum, DayMenu> getDayMenuMap() {
+        return dayMenuMap;
     }
 
-    public void setDayMenuList(List<DayMenu> weekMenuList) {
-        this.dayMenuList = weekMenuList;
+    public void setDayMenuMap(Map<DaysEnum, DayMenu> dayMenuMap) {
+        this.dayMenuMap = dayMenuMap;
     }
 }

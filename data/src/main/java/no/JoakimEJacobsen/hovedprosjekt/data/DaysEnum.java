@@ -4,21 +4,30 @@ package no.JoakimEJacobsen.hovedprosjekt.data;
  * Created by Joakim on 05.02.2017.
  */
 public enum DaysEnum {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY;
+    MONDAY(2),
+    TUESDAY(3),
+    WEDNESDAY(4),
+    THURSDAY(5),
+    FRIDAY(6);
 
-    public Long getDaysEnumId() {
-        Long temp = 0L;
-        switch (this) {
-            case MONDAY: temp = 1L; break;
-            case TUESDAY: temp = 2L; break;
-            case WEDNESDAY: temp = 3L; break;
-            case THURSDAY: temp = 4L; break;
-            case FRIDAY: temp = 5L; break;
+    private int id;
+
+    private DaysEnum(int id) {
+        this.id = id;
+    }
+
+    public DaysEnum getDayById(int id) {
+        switch (id) {
+            case 2: return DaysEnum.MONDAY;
+            case 3: return DaysEnum.TUESDAY;
+            case 4: return DaysEnum.WEDNESDAY;
+            case 5: return DaysEnum.THURSDAY;
+            case 6: return DaysEnum.FRIDAY;
         }
-        return temp;
+        return null;
+    }
+
+    public int getId() {
+        return id;
     }
 }

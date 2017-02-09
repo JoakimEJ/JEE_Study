@@ -7,7 +7,6 @@ import java.util.*;
  * in @Before method of testing.
  */
 abstract class DefaultsForTesting {
-
     // Dishes
     static Dish dish01 = null;
     static Dish dish02 = null;
@@ -22,7 +21,7 @@ abstract class DefaultsForTesting {
     static DayMenu dayMenu03 = null;
 
     // List of DayMenus
-    static List<DayMenu> dayMenus = null;
+    static Map<DaysEnum, DayMenu> dayMenuMap = null;
 
     // WeekMenu ID's
     static WeekMenuId weekMenuId01 = null;
@@ -42,19 +41,27 @@ abstract class DefaultsForTesting {
         dishes = new ArrayList<>(Arrays.asList(dish01, dish02, dish03));
 
         // DayMenus
-        dayMenu01 = new DayMenu(DaysEnum.WEDNESDAY, dishes);
-        dayMenu02 = new DayMenu(DaysEnum.THURSDAY, dishes);
-        dayMenu03 = new DayMenu(DaysEnum.FRIDAY, dishes);
+        dayMenu01 = new DayMenu(dishes);
+        dayMenu02 = new DayMenu(dishes);
+        dayMenu03 = new DayMenu(dishes);
 
-        // List of DayMenus
-        dayMenus = new ArrayList<>(Arrays.asList(dayMenu01, dayMenu02, dayMenu03));
+        // Map of DayMenus with days
+        dayMenuMap = new HashMap<>();
+        dayMenuMap.put(DaysEnum.WEDNESDAY, dayMenu01);
+        dayMenuMap.put(DaysEnum.THURSDAY, dayMenu02);
+        dayMenuMap.put(DaysEnum.FRIDAY, dayMenu03);
 
         // WeekMenu ID's
-        weekMenuId01 = new WeekMenuId(18, 2017);
+        weekMenuId01 = new WeekMenuId(6, 2017);
         weekMenuId02 = new WeekMenuId(10, 2022);
 
         // WeekMenus
-        weekMenu01 = new WeekMenu(weekMenuId01, dayMenus);
-        weekMenu02 = new WeekMenu(weekMenuId02, dayMenus);
+        weekMenu01 = new WeekMenu();
+        weekMenu01.setId(weekMenuId01);
+        weekMenu01.setDayMenuMap(dayMenuMap);
+
+        weekMenu02 = new WeekMenu();
+        weekMenu02.setId(weekMenuId02);
+        weekMenu02.setDayMenuMap(dayMenuMap);
     }
 }
