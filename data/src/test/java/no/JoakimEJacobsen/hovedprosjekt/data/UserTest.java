@@ -31,10 +31,8 @@ public class UserTest {
 
     @After
     public void tearDown() {
-        if(em.isOpen())
-            em.close();
-        if(factory.isOpen())
-            factory.close();
+        em.close();
+        factory.close();
     }
 
     @Test

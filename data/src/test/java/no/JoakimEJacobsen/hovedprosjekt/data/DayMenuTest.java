@@ -26,16 +26,12 @@ public class DayMenuTest {
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         factory = Persistence.createEntityManagerFactory("DB");
         em = factory.createEntityManager();
-
-        setUpDefaults();
     }
 
     @After
     public void tearDown() {
-        if(em.isOpen())
-            em.close();
-        if(factory.isOpen())
-            factory.close();
+        em.close();
+        factory.close();
     }
 
     @Test
@@ -44,7 +40,7 @@ public class DayMenuTest {
         // SETUP //
         DayMenu dayMenu = new DayMenu();
 
-        // PERSIST // and clear em cache
+        // PERSIST (And commit..) // and clear em cache
         assertTrue(persistAndCommit(em, dayMenu));
         em.clear();
 
@@ -57,6 +53,10 @@ public class DayMenuTest {
 
     @Test
     public void testDayMenu_commit2DayMenusWithSameDishes() {
+
+        // SETUP
+        DayMenu dayMenu01 = getValidDayMenu(1);
+        DayMenu dayMenu02 = getValidDayMenu(2);
 
         // PERSIST //
         assertTrue(persistAndCommit(em, dayMenu01));
@@ -75,12 +75,5 @@ public class DayMenuTest {
 
         assertEquals(3, dayMenus.get(0).getDishList().size());
         assertEquals(3, dayMenus.get(1).getDishList().size());
-
-//        for (DayMenu dayMenu : dayMenus) {
-//            System.out.println("Daymenu id = " + dayMenu.getDayMenuId());
-//            for (Dish dish : dayMenu.getDayMenuList()) {
-//                System.out.println(dish);
-//            }
-//        }
     }
 }
