@@ -7,6 +7,8 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import java.util.List;
 import java.util.logging.Level;
 
 import static no.JoakimEJacobsen.hovedprosjekt.myUtils.LocalUtils.persistAndCommit;
@@ -32,6 +34,26 @@ public class DishTest {
         em.close();
         factory.close();
     }
+
+    /**
+     * QUERY-METHODS START
+     */
+    //Query all dishes
+    public List<Dish> getAllDishes(EntityManager em) {
+        Query query = em.createQuery("select d from Dish d");
+
+        return query.getResultList();
+    }
+
+    // Count all dishes
+    public long getCountAllDishes(EntityManager em) {
+        Query query = em.createQuery("select count(d) from Dish d");
+
+        return (long)query.getSingleResult();
+    }
+    /**
+     * QUERY-METHODS END
+     */
 
     @Test
     public void testCreateAndPersistDishWithEmptyConstructor() {

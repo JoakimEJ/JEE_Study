@@ -4,11 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import static no.JoakimEJacobsen.hovedprosjekt.myUtils.LocalUtils.*;
@@ -35,6 +33,37 @@ public class UserTest {
         factory.close();
     }
 
+    /**
+     * QUERY-METHODS START
+     */
+    //Query all users
+    public List<User> getAllUsers(EntityManager em) {
+        Query query = em.createQuery("select u from User u");
+
+        return query.getResultList();
+    }
+
+    // Count all users
+    public long getCountAllUsers(EntityManager em) {
+        Query query = em.createQuery("select count(u) from User u");
+
+        return (long)query.getSingleResult();
+    }
+    /**
+     * QUERY-METHODS END
+     */
+
+    @Test
+    public void testCountAllUsers() {
+        User u1 = new User();
+        User u2 = new User();
+        User u3 = new User();
+
+        persistAndCommit(em, u1, u2, u3);
+
+        assertEquals(3L, getCountAllUsers(em));
+    }
+
     @Test
     public void testIdPersistence() {
         User user = new User();
@@ -49,42 +78,4 @@ public class UserTest {
 
         assertEquals(1, user.getUserId().longValue());
     }
-
-    /**
-     * Here are all the test/code which has notes/comments included for
-     * learning purposes. All tests/methods in this format has a name that
-     * ends with .._Notes
-     */
-    @Test
-    public void testIdPersistence_Notes() {
-        User user = new User();
-        user.setName("someName");
-        user.setSurname("someSurname");
-
-        // By default, no id, until data is committed to the database
-        assertNull(user.getUserId());
-
-        // Committing data to database needs to be inside a transaction
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-
-        try{
-            /*
-                The following is actually executing this SQL statement:
-
-                insert into User (name, surname, id) values (?, ?, ?)
-
-             */
-            em.persist(user);
-
-            // There can be several operations on the "cache" EntityManager before we actually commit the transaction
-            tx.commit();
-        } catch (Exception e) {
-            // Abort the transaction if there was any exception
-            // OBS: The entity might actually have an id now, despite the rollback
-            tx.rollback();
-            fail();
-        }
-    }
-
 }

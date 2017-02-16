@@ -5,7 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 
@@ -32,6 +35,40 @@ public class DayMenuTest {
     public void tearDown() {
         em.close();
         factory.close();
+    }
+
+    public DayMenu getCurrentDayMenu(EntityManager em) {
+        Calendar c = GregorianCalendar.getInstance();
+        int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
+        int year = c.get(GregorianCalendar.YEAR);
+        DaysEnum today = DaysEnum.values()[c.get(GregorianCalendar.DAY_OF_WEEK)-2];
+
+        Query query = em.createQuery("SELECT wm from WeekMenu wm WHERE wm.id.week = ?1 AND wm.id.year = ?2");
+        query.setParameter(1, week);
+        query.setParameter(2, year);
+
+        WeekMenu tempWeekMenu = (WeekMenu) query.getSingleResult();
+
+        return tempWeekMenu.getDayMenuMap().get(today);
+    }
+
+    @Test
+    public void testGetCurrentDayMenu() {
+        Calendar c = GregorianCalendar.getInstance();
+        int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
+        int year = c.get(GregorianCalendar.YEAR);
+
+        WeekMenu wm = getValidWeekMenu(week, year);
+        persistAndCommit(em, wm);
+        em.clear();
+
+        DayMenu dayMenu = getCurrentDayMenu(em);
+        assertNotNull(dayMenu);
+
+        // These are based on the class DefaultsForTesting (getValidWeekMenu(week, year))
+        assertTrue(dayMenu.getDishList().get(0).getName().equals("Ant-soup"));
+        assertTrue(dayMenu.getDishList().get(1).getName().equals("Beetle-stew"));
+        assertTrue(dayMenu.getDishList().get(2).getName().equals("Crepes"));
     }
 
     @Test

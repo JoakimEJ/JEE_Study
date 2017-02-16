@@ -95,7 +95,7 @@ public class WeekMenuTest
         // TODO: DishList.size -> Use java 8 streams to check size of DishList in all DayMenus of both WeekMenus
     }
 
-    private void query_CurrentWeekMenu() {
+    public WeekMenu getCurrentWeekMenu() {
         Calendar c = GregorianCalendar.getInstance();
         int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
         int year = c.get(GregorianCalendar.YEAR);
@@ -104,11 +104,38 @@ public class WeekMenuTest
 
         DaysEnum tDay = DaysEnum.values()[dayOfWeek-2];
         System.out.println("Day of week name = " + tDay.name());
+
+        Query query = em.createQuery("select wm from WeekMenu wm WHERE wm.id.week = ?1 AND wm.id.year = ?2");
+        query.setParameter(1, week);
+        query.setParameter(2, year);
+
+        if (query.getSingleResult() != null) {
+            System.out.println("Found entry!");
+        }
+
+        return (WeekMenu) query.getSingleResult();
     }
 
-    // TODO: FINISH THIS TEST..
+    public WeekMenu getWeekMenu(EntityManager em, int week, int year) {
+        Query query = em.createQuery("select wm from WeekMenu wm WHERE wm.id.week = ?1 AND wm.id.year = ?2");
+        query.setParameter(1, week);
+        query.setParameter(2, year);
+
+        return (WeekMenu) query.getSingleResult();
+    }
+
     @Test
-    public void getCurrentDayMenu() {
+    public void testGetWeekMenu() {
+        WeekMenu wm1 = getValidWeekMenu(9, 2017);
+        persistAndCommit(em, wm1);
+        em.clear();
+
+        WeekMenu weekMenuFromDB = getWeekMenu(em, 9, 2017);
+        assertNotNull(weekMenuFromDB);
+    }
+
+    @Test
+    public void TestGetCurrentWeekMenu() {
          // Setup for query + the query itself.
         Calendar c = GregorianCalendar.getInstance();
         int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
@@ -120,5 +147,10 @@ public class WeekMenuTest
         // Setup: put WeekMenu to search for in database
         assertTrue(persistAndCommit(em, weekMenu01));
         em.clear();
+
+        WeekMenu weekMenuFromDB = getCurrentWeekMenu();
+        assertNotNull(weekMenuFromDB);
+        assertEquals(week, weekMenuFromDB.getId().getWeek());
+        assertEquals(year, weekMenuFromDB.getId().getYear());
     }
 }
