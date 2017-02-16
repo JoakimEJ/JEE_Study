@@ -143,7 +143,7 @@ abstract class DefaultsForTesting {
         tempWeekMenuId.setYear(year);
 
         tempWeekMenu.setId(tempWeekMenuId);
-        tempWeekMenu.setDayMenuMap(getValidMapOfDayMenus(1));
+        tempWeekMenu.setDayMenuMap(getValidMapOfDayMenus(0));
 
         return tempWeekMenu;
     }

@@ -60,7 +60,7 @@ public class WeekMenuTest
         Query query = em.createQuery("SELECT k FROM WeekMenu k");
         List<WeekMenu> weekMenus = query.getResultList();
         WeekMenu testWeekMenu = weekMenus.get(0);
-        assertEquals(3, testWeekMenu.getDayMenuMap().size());
+        assertEquals(5, testWeekMenu.getDayMenuMap().size());
 
 
         assertEquals(3, testWeekMenu.getDayMenuMap().get(DaysEnum.WEDNESDAY).getDishList().size());

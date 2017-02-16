@@ -17,19 +17,19 @@ public class Dish implements Serializable
     private Long dishId;
 
     @NotNull
-    @Min(2)
-    @Max(128)
+    //@Min(2)
+    //@Max(128)
     private String name;
 
     // Type of dish (breakfast, lunch, dinner) TODO: change this to use enum later
     @NotNull
-    @Min(3)
-    @Max(128)
+    //@Min(3)
+    //@Max(128)
     private String type;
 
     @NotNull
-    @Min(16)
-    @Max(280)
+    //@Min(16)
+    //@Max(280)
     private String description;
 
     // Empty Constructor

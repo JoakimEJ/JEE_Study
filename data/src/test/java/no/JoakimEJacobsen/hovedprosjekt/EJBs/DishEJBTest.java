@@ -1,10 +1,16 @@
 package no.JoakimEJacobsen.hovedprosjekt.EJBs;
 
 import no.JoakimEJacobsen.hovedprosjekt.entities.Dish;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.ejb.EJB;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -18,38 +24,26 @@ import static org.junit.Assert.*;
 /**
  * Created by Joakim on 16.02.2017.
  */
+@RunWith(Arquillian.class)
 public class DishEJBTest {
 
     protected static EJBContainer ec;
     protected static Context ctx;
 
-    @Before
-    public void initContainer() throws Exception {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(EJBContainer.MODULES, new File("target/classes"));
-        ec = EJBContainer.createEJBContainer(properties);
-        ctx = ec.getContext();
+    @Deployment
+    public static JavaArchive createDeployment() {
+
+        return ShrinkWrap.create(JavaArchive.class)
+                .addClasses(DishEJB.class, Dish.class)
+                .addAsResource("META-INF/persistence.xml");
     }
 
-    protected <T> T getEJB(Class<T> klass){
-        try {
-            return (T) ctx.lookup("java:global/classes/"+klass.getSimpleName()+"!"+klass.getName());
-        } catch (NamingException e) {
-            return null;
-        }
-    }
+    @EJB
+    private DishEJB dishEJB;
 
-    @After
-    public void closeContainer() throws Exception {
-        if (ctx != null)
-            ctx.close();
-        if (ec != null)
-            ec.close();
-    }
 
     @Test
     public void testCreateDish() {
-        DishEJB dishEJB = getEJB(DishEJB.class);
         long findId = dishEJB.registerNewDish("dish01", "type01", "description01");
 
         Dish dishFromDB = dishEJB.getDishById(findId);

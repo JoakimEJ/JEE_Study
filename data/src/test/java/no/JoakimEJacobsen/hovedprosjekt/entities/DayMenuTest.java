@@ -40,7 +40,12 @@ public class DayMenuTest {
         Calendar c = GregorianCalendar.getInstance();
         int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
         int year = c.get(GregorianCalendar.YEAR);
-        DaysEnum today = DaysEnum.values()[c.get(GregorianCalendar.DAY_OF_WEEK)-2];
+        int day = c.get(GregorianCalendar.DAY_OF_WEEK);
+        DaysEnum today = DaysEnum.values()[day-2];
+
+        if (day == 1 || day == 7) {
+            today = DaysEnum.MONDAY;
+        }
 
         Query query = em.createQuery("SELECT wm from WeekMenu wm WHERE wm.id.week = ?1 AND wm.id.year = ?2");
         query.setParameter(1, week);
@@ -56,18 +61,26 @@ public class DayMenuTest {
         Calendar c = GregorianCalendar.getInstance();
         int week = c.get(GregorianCalendar.WEEK_OF_YEAR);
         int year = c.get(GregorianCalendar.YEAR);
+        int day = c.get(GregorianCalendar.DAY_OF_WEEK);
+        DaysEnum today = DaysEnum.values()[day-2];
+
+        if (day == 1 || day == 7) {
+            today = DaysEnum.MONDAY;
+        }
+
 
         WeekMenu wm = getValidWeekMenu(week, year);
         persistAndCommit(em, wm);
         em.clear();
 
-        DayMenu dayMenu = getCurrentDayMenu(em);
-        assertNotNull(dayMenu);
+        DayMenu dayMenuFromWM = wm.getDayMenuMap().get(today);
 
-        // These are based on the class DefaultsForTesting (getValidWeekMenu(week, year))
-        assertTrue(dayMenu.getDishList().get(0).getName().equals("Ant-soup"));
-        assertTrue(dayMenu.getDishList().get(1).getName().equals("Beetle-stew"));
-        assertTrue(dayMenu.getDishList().get(2).getName().equals("Crepes"));
+        DayMenu dayMenuFromDB = getCurrentDayMenu(em);
+        assertNotNull(dayMenuFromDB);
+
+        assertEquals(dayMenuFromDB.getDishList().get(0), dayMenuFromWM.getDishList().get(0));
+        assertEquals(dayMenuFromDB.getDishList().get(1), dayMenuFromWM.getDishList().get(1));
+        assertEquals(dayMenuFromDB.getDishList().get(2), dayMenuFromWM.getDishList().get(2));
     }
 
     @Test

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Stateless
 public class DishEJB {
 
-    @PersistenceContext(unitName = "aq")
+    @PersistenceContext(unitName = "Aq")
     private EntityManager em;
 
     public DishEJB() {}
