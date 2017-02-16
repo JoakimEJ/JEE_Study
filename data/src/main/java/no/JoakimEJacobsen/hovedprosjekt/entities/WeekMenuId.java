@@ -1,8 +1,9 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
-import com.sun.istack.internal.NotNull;
+
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**

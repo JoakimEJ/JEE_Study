@@ -1,18 +1,15 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.persistence.*;
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
 
 import java.util.*;
 import java.util.logging.Level;
 
-import static no.JoakimEJacobsen.hovedprosjekt.data.DefaultsForTesting.*;
+import static no.JoakimEJacobsen.hovedprosjekt.entities.DefaultsForTesting.*;
 import static no.JoakimEJacobsen.hovedprosjekt.myUtils.LocalUtils.persistAndCommit;
 import static org.junit.Assert.*;
 

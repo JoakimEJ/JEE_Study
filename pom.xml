@@ -15,6 +15,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <wildfly.version>10.1.0.Final</wildfly.version>
+        <jbossTarget>${basedir}/target/downloaded_Wildfly</jbossTarget>
+        <jbossHome>${jbossTarget}/wildfly-${wildfly.version}</jbossHome>
     </properties>
 
     <!--
@@ -40,6 +43,11 @@
                 Note: actual settings can be overwritten in the module pom.xml files.
             -->
 
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>7.0</version>
+            </dependency>
 
             <!-- JPA / Hibernate / Database -->
             <dependency>
@@ -55,6 +63,12 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>5.3.4.Final</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>1.4.193</version>
@@ -65,6 +79,41 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.23</version>
+            </dependency>
+
+            <!-- Arquilian, needed for integration testing of EJB -->
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.1.12.Final</version>
+                <!--
+                    This is bit tricky. The Arquillian ecosystem defines
+                    many different dependencies, but often you will just need
+                    only some of them.
+                    However, you do not want to mix different versions.
+                    By "import" a BOM (Bill Of Materials) pom file, you practically
+                    define all those dependencies here in this <dependencyManagement>
+                    having all the same version.
+
+                    See:
+                    https://mvnrepository.com/artifact/org.jboss.arquillian/arquillian-bom/1.1.11.Final
+                    https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html
+                -->
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wildfly.arquillian</groupId>
+                <artifactId>wildfly-arquillian-container-managed</artifactId>
+                <version>1.1.0.Final</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-jacoco</artifactId>
+                <version>1.0.0.Alpha8</version>
+                <scope>test</scope>
             </dependency>
 
 
@@ -123,6 +172,148 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>unpack</id>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>unpack</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>org.wildfly</groupId>
+                                        <artifactId>wildfly-dist</artifactId>
+                                        <version>${wildfly.version}</version>
+                                        <type>zip</type>
+                                        <overWrite>false</overWrite>
+                                        <outputDirectory>${jbossTarget}</outputDirectory>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--
+                    Maven phases:
+                    https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference
+
+                    Main ones:
+
+                    *clean*
+                    compile
+                    process-test-classes
+                    test
+                    package
+                    pre-integration-test
+                    integration-test
+                    post-integration-test
+                    verify
+                    install
+                    deploy
+
+                    apart from *clean*, when executing one of those phases (eg "mvn test"), all previous
+                    phases are executed as well.
+
+                    Note:
+
+                    process-test-classes: this is when we download/unpack Wildfly
+                    test: unit tests (*Test.java) are executed
+                    package: creation of jar/war files
+                    pre-integration-test: we start Wildfly for the integration tests
+                    integration-test: execute all *IT.java tests
+                    post-integration-test: stop Wildfly
+                    install: copy the jar/war files into your ~/.m2 folder (like any other dependency)
+
+                    clean: delete everything in the "target" folders
+                -->
+
+
+                <!--
+                   Plugin configuration to automatically start WildFly before integration tests are
+                   started, and then stop it once all are finished
+                -->
+                <plugin>
+                    <groupId>org.wildfly.plugins</groupId>
+                    <artifactId>wildfly-maven-plugin</artifactId>
+                    <version>1.1.0.Alpha11</version>
+                    <configuration>
+                        <!--
+                            If jbossHome is not specified, this plugin will download it.
+                            Here, we point to the same installation done for the unit tests
+                            with the maven-dependency-plugin, as to avoid double download/installation
+                          -->
+                        <jbossHome>${jbossHome}</jbossHome>
+                        <add-user>
+                            <users>
+                                <user>
+                                    <username>admin</username>
+                                    <password>admin</password>
+                                </user>
+                            </users>
+                        </add-user>
+                        <java-opts>
+                            <!-- comment out if need to attach a remote debugger -->
+                            <!--<javaOpt>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005</javaOpt>-->
+                        </java-opts>
+                    </configuration>
+                    <executions>
+
+                        <!--
+                            for list of Maven phases, see
+
+                            https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference
+
+                            for Wildfly plugin goals, see
+
+                            https://docs.jboss.org/wildfly/plugins/maven/latest/usage.html
+                        -->
+                        <execution>
+                            <!--
+                                This means:
+                                when Maven is executing the "pre-integration-test" phase of the build,
+                                then this plugin will execute the commands "start" (which does start WildFly)
+                                and then "deploy" (which deploy the compiled/packaged WAR of the project)
+                            -->
+                            <id>init</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>start</goal>
+                                <!--
+                                this starts WildFly asynchronously, ie non-blocking as "run" would do.
+                                When running tests from IDE, can start WildFly with "mvn wildfly:run"
+                                 -->
+                                <goal>deploy</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>shutdown</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>undeploy</goal>
+                                <goal>shutdown</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--
+                    Avoid failing War generation if web.xml is missing, as we ll not
+                    use it in some example modules
+                -->
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>

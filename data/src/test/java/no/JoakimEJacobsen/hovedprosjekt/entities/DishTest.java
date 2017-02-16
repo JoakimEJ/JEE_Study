@@ -1,4 +1,4 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
 import org.junit.After;
 import org.junit.Before;

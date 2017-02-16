@@ -1,4 +1,4 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
 import org.junit.After;
 import org.junit.Before;
@@ -70,10 +70,10 @@ public class UserTest {
         user.setName("someName");
         user.setSurname("someSurname");
 
-        // By default, no id, until data is committed to the database
+        // By default, no id, until entities is committed to the database
         assertNull(user.getUserId());
 
-        // Committing data to database needs to be inside a transaction
+        // Committing entities to database needs to be inside a transaction
         assertTrue(persistAndCommit(em, user));
 
         assertEquals(1, user.getUserId().longValue());

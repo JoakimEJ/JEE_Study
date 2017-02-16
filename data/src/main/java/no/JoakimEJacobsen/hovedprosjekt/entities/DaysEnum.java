@@ -1,4 +1,4 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
 /**
  * Created by Joakim on 05.02.2017.

@@ -1,4 +1,4 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

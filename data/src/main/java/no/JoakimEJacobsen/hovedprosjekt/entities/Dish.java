@@ -1,6 +1,9 @@
-package no.JoakimEJacobsen.hovedprosjekt.data;
+package no.JoakimEJacobsen.hovedprosjekt.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -13,10 +16,20 @@ public class Dish implements Serializable
     @Id @GeneratedValue
     private Long dishId;
 
+    @NotNull
+    @Min(2)
+    @Max(128)
     private String name;
 
     // Type of dish (breakfast, lunch, dinner) TODO: change this to use enum later
+    @NotNull
+    @Min(3)
+    @Max(128)
     private String type;
+
+    @NotNull
+    @Min(16)
+    @Max(280)
     private String description;
 
     // Empty Constructor
@@ -69,5 +82,18 @@ public class Dish implements Serializable
                 ", type = " + type +
                 ", description = " + description +
                 "}" ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dish)) return false;
+
+        Dish dish = (Dish) o;
+
+        if (getDishId() != null ? !getDishId().equals(dish.getDishId()) : dish.getDishId() != null) return false;
+        if (getName() != null ? !getName().equals(dish.getName()) : dish.getName() != null) return false;
+        if (getType() != null ? !getType().equals(dish.getType()) : dish.getType() != null) return false;
+        return getDescription() != null ? getDescription().equals(dish.getDescription()) : dish.getDescription() == null;
     }
 }
