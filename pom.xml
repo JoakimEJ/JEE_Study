@@ -11,6 +11,7 @@
     <modules>
         <module>data</module>
         <module>MyUtils</module>
+        <module>Arquillian</module>
     </modules>
 
     <properties>
