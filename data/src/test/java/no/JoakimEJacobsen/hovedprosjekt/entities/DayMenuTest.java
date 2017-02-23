@@ -103,9 +103,12 @@ public class DayMenuTest {
     @Test
     public void testDayMenu_commit2DayMenusWithSameDishes() {
 
-        // SETUP
-        DayMenu dayMenu01 = getValidDayMenu(1);
-        DayMenu dayMenu02 = getValidDayMenu(2);
+        // SETUP DISHES
+        List<Dish> dishes = getValidListOfDishes();
+
+        // SETUP DAYMENUS
+        DayMenu dayMenu01 = getValidDayMenu(dishes);
+        DayMenu dayMenu02 = getValidDayMenu(dishes);
 
         // PERSIST //
         assertTrue(persistAndCommit(em, dayMenu01));
